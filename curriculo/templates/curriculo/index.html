@@ -1,10 +1,117 @@
 {% extends 'base.html' %}
 
 {% block head_title %}
-    <title>Curriculo</title>
-{% endblock head_title %}
+  <title>Curriculo</title>
+{% endblock %}
 
 {% block body_content %}
-    <h1>Curriculo</h1>
-    <p>Aqui será o curriculo</p>
-{% endblock body_content %}
+<h3>Apresentação</h3>
+<div class="card">
+  <div class="card-body">
+    Desenvolvedor de software focado em automação com Python, chatbots (NICE) e back-end Flask/Django. Experiência em modelagem de fluxos as-is/to-be, integrações e otimização de rotinas de atendimento/ops em ambientes Windows/Linux e nuvem (AWS).
+  </div>
+</div>
+
+<h3>Tecnologia</h3>
+<div class="card">
+  <div class="card-body">
+    Python (Flask, Selenium, BeautifulSoup, FFmpeg), Django, Streamlit; Postgres, MongoDB, Firebase; AWS; NICE; Windows/Linux; Git/GitHub; Visio; GPG/Kleopatra; SMTP.
+  </div>
+</div>
+
+<div id="experiecias-profissionais" class="row">
+  <h3>Experiencias Profissionais</h3>
+  {% for experiencia in experiencias %}
+    {% if experiencia.categoria == 'profissional' %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 position-relative">
+          <div class="card-body">
+            <div class="position-absolute top-0 end-0 p-2 text-end" style="font-size: 0.9em;">
+              <span class="badge bg-light text-dark">{{ experiencia.data_inicio|date:'d/m/Y' }} - {{ experiencia.data_final|date:'d/m/Y' }}</span>
+            </div>
+            <h5 class="card-title">{{ experiencia.cargo }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ experiencia.instituicao }}</h6>
+            <p class="card-text">{{ experiencia.descricao }}</p>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% empty %}
+    <p>Nenhuma experiencia profissional encontrada.</p>
+  {% endfor %}
+</div>
+
+<div id="experiecias-projetos" class="row">
+  <h3>Projetos</h3>
+  {% for experiencia in experiencias %}
+    {% if experiencia.categoria == 'projeto' %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 position-relative">
+          <div class="card-body">
+            <div class="position-absolute top-0 end-0 p-2 text-end" style="font-size: 0.9em;">
+              <span class="badge bg-light text-dark">{{ experiencia.data_inicio|date:'m/Y' }} - {{ experiencia.data_final|date:'m/Y' }}</span>
+            </div>
+            <h5 class="card-title">{{ experiencia.cargo }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ experiencia.instituicao }}</h6>
+            <p class="card-text">{{ experiencia.descricao }}</p>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% empty %}
+    <p>Nenhuma experiencia profissional encontrada.</p>
+  {% endfor %}
+</div>
+
+  <div id="certificados-formacao" class="row">
+    <h3>Formações Academicas</h3>
+    {% for certificado in certificados %}
+      {% if certificado.categoria == 'formacao' %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 position-relative">
+            <div class="card-body">
+              <div class="position-absolute top-0 end-0 p-2 text-end" style="font-size: 0.9em;">
+                <span class="badge bg-light text-dark">{{ certificado.data_inicio|date:'Y' }} - {{ certificado.data_final|date:'Y' }}</span>
+              </div>
+              <h5 class="card-title">{{ certificado.titulo }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ certificado.instituicao }}</h6>
+              <p class="card-text">{{ certificado.descricao }}</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% empty %}
+      <p>Nenhum certificado encontrado.</p>
+    {% endfor %}
+  </div>
+
+  <div id="certificados-idiomas" class="row">
+    <h3>Idiomas</h3>
+    {% for certificado in certificados %}
+      {% if certificado.categoria == 'Idiomas' %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 position-relative">
+            <div class="card-body">
+              <div class="position-absolute top-0 end-0 p-2 text-end" style="font-size: 0.9em;">
+                <span class="badge bg-light text-dark">{{ certificado.data_final|date:'Y' }}</span>
+              </div>
+              <h5 class="card-title">{{ certificado.titulo }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ certificado.instituicao }}</h6>
+              <p class="card-text">{{ certificado.descricao }}</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% empty %}
+      <p>Nenhum certificado encontrado.</p>
+    {% endfor %}
+  </div>
+
+
+
+
+{% endblock %}

@@ -1,10 +1,41 @@
 {% extends 'base.html' %}
 
 {% block head_title %}
-    <title>Home</title>
-{% endblock head_title %}
+  <title>gpelai</title>
+{% endblock %}
 
 {% block body_content %}
-    <h1>Home</h1>
-    <p>Aqui será a apresentação.</p>
-{% endblock body_content %}
+  <div class="d-flex gap-3 flex-wrap">
+    <div class="card" style="width: 18rem; background-color: #ffffffff;">
+      <div class="card-body">
+        <h5 class="card-title">Curriculo</h5>
+        <p class="card-text">Resumo profissional com foco em experiências, competências e resultados alcançados.</p>
+        <a href="/curriculo" class="btn" style="background-color: #460000ff; color: #fff;">Acessar</a>
+      </div>
+    </div>
+
+    <div class="card" style="width: 18rem; background-color: #ffffffff;">
+      <div class="card-body">
+        <h5 class="card-title">Blog</h5>
+        <p class="card-text">Blog com posts sobre tecnologia, compartilhamento de conhecimento e experiências pessoais.</p>
+        <a href="" class="btn" style="background-color: #460000ff; color: #fff;">Acessar</a>
+      </div>
+    </div>
+
+    <div class="card" style="width: 18rem; background-color: #ffffffff;">
+      <div class="card-body">
+        <h5 class="card-title">Portifólio</h5>
+        <p class="card-text">Exposição de projetos desenvolvidos, demonstrando habilidades técnicas e criatividade em diferentes áreas.</p>
+        <a href="" class="btn" style="background-color: #460000ff; color: #fff;">Acessar</a>
+      </div>
+    </div>
+
+    <div class="card" style="width: 18rem; background-color: #ffffffff;">
+      <div class="card-body">
+        <h5 class="card-title">Contato</h5>
+        <p class="card-text">Entre em contato para informações, parcerias ou propostas profissionais.</p>
+        <a href="" class="btn" style="background-color: #460000ff; color: #fff;">Acessar</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
