@@ -1,0 +1,34 @@
+.highlight {
+    color: #800000;
+}
+
+.date {
+    font-size: 12px;
+}
+
+#date {
+    font-size: 13px;
+}
+
+#box-title {
+    align-items: center;
+}
+
+#bullet-item {
+    font-size: 13px;
+}
+
+#box-content-center {
+    align-items: center;
+}
+
+#box-content {
+    padding: 10px;
+    text-align: justify;
+}
+
+#skill-badge {
+    background-color: #580016 !important;
+    color: #ffffff;
+    /* deixa o texto legível */
+}

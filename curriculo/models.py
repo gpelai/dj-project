@@ -17,6 +17,10 @@ class Experiencias(models.Model):
     data_final = models.DateField()
     categoria = models.CharField(max_length=100)
 
+    @property
+    def bullets(self):
+        return [p.strip() for p in self.descricao.split(";") if p.strip()]
+
 class Skills(models.Model):
     titulo = models.CharField(max_length=100)
     categoria = models.CharField(max_length=100)

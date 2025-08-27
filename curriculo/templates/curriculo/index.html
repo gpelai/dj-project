@@ -1,136 +1,117 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block head_content %}
   <title>Curriculo</title>
-
-  <style>
-    .card {
-      align-items: center;
-    }
-    .card h4 {
-      color: #e7e7e7ff;
-    }
-    .card.bg-dark {
-      background-color: #212529;
-      color: #fff;
-    }
-    .card p {
-      margin: 0;
-      padding: 10px;
-    }
-    .d-flex.flex-row {
-      flex-wrap: wrap; /* Ensure items wrap to the next line */
-    }
-    .d-flex.flex-row .p-2 {
-      background-color: #f8f9fa;
-      border-radius: 5px;
-      margin: 5px; /* Add spacing between items */
-      padding: 5px 10px;
-    }
-    .card + .card {
-      margin-top: 0; /* Remove spacing between paired cards */
-    }
-  </style>
+  <link rel="stylesheet" href="{% static 'curriculo/css/styles.css' %}" />
 {% endblock %}
 
 {% block body_content %}
-  <div class="row my-4" style="margin-bottom: 0;">
-    <!-- APRESENTAÇÃO -->
-    <div class="col-md-4">
-      <div class="card bg-dark">
-        <h4>Apresentação</h4>
-      </div>
-      <div class="card">
-        <p>Desenvolvedor de software focado em automação com Python, Ura e chatbots (NICE) e back-end Django. Experiência em modelagem de fluxos as-is/to-be, integrações e otimização de rotinas de atendimento/ops em ambientes Windows.</p>
-      </div>
-    </div>
+  <div class="container-fluid my-4">
+    <div class="row g-4">
+      <!-- COLUNA 1: APRESENTAÇÃO, FORMAÇÃO, IDIOMAS, SKILLS -->
+      <div class="col-12 col-md-4">
+        <!-- APRESENTAÇÃO -->
+        <div class="card bg-dark" id="box-title">
+          <h4 class="text-white m-2">Apresentação</h4>
+        </div>
+        <div class="card mb-2" id="box-content">
+          <p>Desenvolvedor de software focado em automação com Python, Ura e chatbots (NICE) e back-end Django. Experiência em modelagem de fluxos as-is/to-be, integrações e otimização de rotinas de atendimento/ops em ambientes Windows.</p>
+        </div>
 
-    <!-- SKILLS -->
-    <div class="col-md-4">
-      <div class="card bg-dark">
-        <h4>Skills</h4>
-      </div>
-      <div class="card" style="padding-left: 25px; padding-bottom: 7px; padding-top: 7px;">
-        {% if skills %}
-          <div class="d-flex flex-row">
-            {% for skill in skills %}
-              <div class="p-2" style="background-color: #800020; color: white;">{{ skill.titulo }}</div>
+        <!-- FORMAÇÃO -->
+        <div class="card bg-dark" id="box-title">
+          <h4 class="text-white m-2">Formação</h4>
+        </div>
+        {% for certificado in certificados|dictsortreversed:'data_final' %}
+          {% if certificado.categoria == 'formacao' %}
+            <div class="card mb-2" id="box-content-center">
+              <h5 class="card-title mb-1 ms-2 mt-2">{{ certificado.titulo }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted ms-2"><span class="highlight">{{ certificado.descricao }}</span></h6>
+              <h6 class="card-subtitle mb-2 text-muted ms-2" id="date">{{ certificado.instituicao }} - {{ certificado.data_final|date:'Y' }}</h6>
+            </div>
+          {% endif %}
+        {% empty %}
+          <p class="ms-2">Nenhum card disponível.</p>
+        {% endfor %}
+
+        <!-- IDIOMAS -->
+        <div class="card bg-dark" id="box-title">
+          <h4 class="text-white m-2">Idiomas</h4>
+        </div>
+        {% for certificado in certificados|dictsortreversed:'data_final' %}
+          {% if certificado.categoria == 'idiomas' %}
+            <div class="card mb-2" id="box-content-center">
+              <h5 class="card-title mb-1 ms-2 mt-2">{{ certificado.titulo }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted ms-2"><span class="highlight">{{ certificado.descricao }}</span></h6>
+              <h6 class="card-subtitle mb-2 text-muted ms-2" id="date">{{ certificado.instituicao }} - {{ certificado.data_final|date:'Y' }}</h6>
+            </div>
+          {% endif %}
+        {% empty %}
+          <p class="ms-2">Nenhum card disponível.</p>
+        {% endfor %}
+
+        <!-- SKILLS -->
+        <div class="card bg-dark" id="box-title">
+          <h4 class="text-white m-2">Skills</h4>
+        </div>
+        <div class="card mb-4">
+          <div class="d-flex flex-wrap gap-2 p-2">
+            {% for skill in skills|dictsort:'titulo' %}
+              <span class="badge bg-secondary" id="skill-badge">{{ skill.titulo }}</span>
+            {% empty %}
+              <p>Nenhum card disponível.</p>
             {% endfor %}
           </div>
-        {% else %}
-          <p>Nenhum card disponível.</p>
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- CERTIFICADOS FORMACAO -->
-    <div class="col-md-4">
-      <div class="card bg-dark">
-        <h4>Formação</h4>
-      </div>
-
-      {% for certificado in certificados|dictsortreversed:'data_final' %}
-        {% if certificado.categoria == 'formacao' %}
-          <div class="card mb-1" style="padding: 3;">
-            <h5 class="card-title mb-1">{{ certificado.titulo }}</h5>
-            <h6 class="card-subtitle mb-1 text-muted">{{ certificado.instituicao }} - <span style="color: #800020;">{{ certificado.descricao }}</span> - {{ certificado.data_final|date:'Y' }}</h6>
-          </div>
-        {% endif %}
-      {% empty %}
-        <p>Nenhum card disponível.</p>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- EXPERIENCIAS PROFISSIONAIS -->
-  <div class="row my-4">
-    <div class="col-md-4">
-      <div class="card bg-dark">
-        <h4>Exp. Profissional</h4>
-      </div>
-      {% for experiencia in experiencias|dictsortreversed:'data_final' %}
-        {% if experiencia.categoria == 'profissional' %}
-          <div class="card mb-1" style="padding: 10px;">
-        <h5 class="card-title mb-1">{{ experiencia.cargo }}</h5>
-        <div class="d-flex justify-content-between">
-            <h6 class="card-subtitle mb-1" style="color: #800020;">{{ experiencia.instituicao }}</h6>
-            <div style="width: 10px;"></div> <!-- Add spacing -->
-            <h6 class="card-subtitle mb-1" style="color: #888888ff;">{{ experiencia.data_inicio|date:'m/Y' }} - {{ experiencia.data_final|date:'m/Y' }}</h6>
         </div>
-        <h6 class="card-text mb-0" style="text-align: justify;">{{ experiencia.descricao }}</h6>
-          </div>
-        {% endif %}
-      {% empty %}
-        <p>Nenhum card disponível.</p>
-      {% endfor %}
-    </div>
-
-    <!-- EXPERIENCIAS PROJETOS -->
-    <div class="col-md-4">
-      <div class="card bg-dark">
-        <h4>Projetos</h4>
       </div>
-      {% for card in setor2_cards %}
-        <div class="card mb-3">
-          <div class="card-body">{{ card.content }}</div>
-        </div>
-      {% empty %}
-        <p>Nenhum card disponível.</p>
-      {% endfor %}
-    </div>
 
-    <!-- EXPERIENCIAS IDIOMAS -->
-    <div class="col-md-4">
-      <div class="card bg-dark">
-        <h4>Idiomas</h4>
-      </div>
-      {% for card in setor3_cards %}
-        <div class="card mb-3">
-          <div class="card-body">{{ card.content }}</div>
+      <!-- COLUNA 2: EXPERIÊNCIA PROFISSIONAL -->
+      <div class="col-12 col-md-4">
+        <div class="card bg-dark" id="box-title">
+          <h4 class="text-white m-2">Exp. Profissional</h4>
         </div>
-      {% empty %}
-        <p>Nenhum card disponível.</p>
-      {% endfor %}
+        {% for experiencia in experiencias|dictsortreversed:'data_final' %}
+          {% if experiencia.categoria == 'profissional' %}
+            <div class="card mb-2" id="box-content">
+              <h5 class="card-title mb-1 ms-2 mt-2">{{ experiencia.cargo }}</h5>
+              <h6 class="card-subtitle mb-1 ms-2 text-muted"><span class="highlight">{{ experiencia.instituicao }}</span></h6>
+              <h6 class="card-subtitle mb-1 ms-2 text-muted"><span class="date">{{ experiencia.data_inicio|date:'m/Y' }} - {{ experiencia.data_final|date:'m/Y' }}</span></h6>
+              {% comment %} <p class="card-text ms-2 mb-2">{{ experiencia.descricao }}</p> {% endcomment %}
+              <ul class="ms-4 mb-2">
+                {% for item in experiencia.bullets %}
+                  <li id="bullet-item">{{ item }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        {% empty %}
+          <p class="ms-2">Nenhum card disponível.</p>
+        {% endfor %}
+      </div>
+
+      <!-- COLUNA 3: PROJETOS -->
+      <div class="col-12 col-md-4">
+        <div class="card bg-dark" id="box-title">
+          <h4 class="text-white m-2">Projetos</h4>
+        </div>
+        {% for experiencia in experiencias|dictsortreversed:'data_final' %}
+          {% if experiencia.categoria == 'projeto' %}
+            <div class="card mb-2" id="box-content">
+              <h5 class="card-title mb-1 ms-2 mt-2">{{ experiencia.cargo }}</h5>
+              <h6 class="card-subtitle mb-1 ms-2 text-muted"><span class="highlight">{{ experiencia.instituicao }}</span></h6>
+              <h6 class="card-subtitle mb-1 ms-2 text-muted" id="date">{{ experiencia.data_inicio|date:'m/Y' }} - {{ experiencia.data_final|date:'m/Y' }}</h6>
+              <ul class="ms-4 mb-2">
+                {% for item in experiencia.bullets %}
+                  <li id="bullet-item">{{ item }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        {% empty %}
+          <p class="ms-2">Nenhum card disponível.</p>
+        {% endfor %}
+      </div>
     </div>
   </div>
 {% endblock %}
