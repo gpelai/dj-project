@@ -1,117 +1,136 @@
 {% extends 'base.html' %}
 
-{% block head_title %}
+{% block head_content %}
   <title>Curriculo</title>
+
+  <style>
+    .card {
+      align-items: center;
+    }
+    .card h4 {
+      color: #e7e7e7ff;
+    }
+    .card.bg-dark {
+      background-color: #212529;
+      color: #fff;
+    }
+    .card p {
+      margin: 0;
+      padding: 10px;
+    }
+    .d-flex.flex-row {
+      flex-wrap: wrap; /* Ensure items wrap to the next line */
+    }
+    .d-flex.flex-row .p-2 {
+      background-color: #f8f9fa;
+      border-radius: 5px;
+      margin: 5px; /* Add spacing between items */
+      padding: 5px 10px;
+    }
+    .card + .card {
+      margin-top: 0; /* Remove spacing between paired cards */
+    }
+  </style>
 {% endblock %}
 
 {% block body_content %}
-<h3>Apresentação</h3>
-<div class="card">
-  <div class="card-body">
-    Desenvolvedor de software focado em automação com Python, chatbots (NICE) e back-end Flask/Django. Experiência em modelagem de fluxos as-is/to-be, integrações e otimização de rotinas de atendimento/ops em ambientes Windows/Linux e nuvem (AWS).
-  </div>
-</div>
-
-<h3>Tecnologia</h3>
-<div class="card">
-  <div class="card-body">
-    Python (Flask, Selenium, BeautifulSoup, FFmpeg), Django, Streamlit; Postgres, MongoDB, Firebase; AWS; NICE; Windows/Linux; Git/GitHub; Visio; GPG/Kleopatra; SMTP.
-  </div>
-</div>
-
-<div id="experiecias-profissionais" class="row">
-  <h3>Experiencias Profissionais</h3>
-  {% for experiencia in experiencias %}
-    {% if experiencia.categoria == 'profissional' %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 position-relative">
-          <div class="card-body">
-            <div class="position-absolute top-0 end-0 p-2 text-end" style="font-size: 0.9em;">
-              <span class="badge bg-light text-dark">{{ experiencia.data_inicio|date:'d/m/Y' }} - {{ experiencia.data_final|date:'d/m/Y' }}</span>
-            </div>
-            <h5 class="card-title">{{ experiencia.cargo }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ experiencia.instituicao }}</h6>
-            <p class="card-text">{{ experiencia.descricao }}</p>
-            </ul>
-
-          </div>
-        </div>
+  <div class="row my-4" style="margin-bottom: 0;">
+    <!-- APRESENTAÇÃO -->
+    <div class="col-md-4">
+      <div class="card bg-dark">
+        <h4>Apresentação</h4>
       </div>
-    {% endif %}
-  {% empty %}
-    <p>Nenhuma experiencia profissional encontrada.</p>
-  {% endfor %}
-</div>
-
-<div id="experiecias-projetos" class="row">
-  <h3>Projetos</h3>
-  {% for experiencia in experiencias %}
-    {% if experiencia.categoria == 'projeto' %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 position-relative">
-          <div class="card-body">
-            <div class="position-absolute top-0 end-0 p-2 text-end" style="font-size: 0.9em;">
-              <span class="badge bg-light text-dark">{{ experiencia.data_inicio|date:'m/Y' }} - {{ experiencia.data_final|date:'m/Y' }}</span>
-            </div>
-            <h5 class="card-title">{{ experiencia.cargo }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ experiencia.instituicao }}</h6>
-            <p class="card-text">{{ experiencia.descricao }}</p>
-            </ul>
-
-          </div>
-        </div>
+      <div class="card">
+        <p>Desenvolvedor de software focado em automação com Python, Ura e chatbots (NICE) e back-end Django. Experiência em modelagem de fluxos as-is/to-be, integrações e otimização de rotinas de atendimento/ops em ambientes Windows.</p>
       </div>
-    {% endif %}
-  {% empty %}
-    <p>Nenhuma experiencia profissional encontrada.</p>
-  {% endfor %}
-</div>
+    </div>
 
-  <div id="certificados-formacao" class="row">
-    <h3>Formações Academicas</h3>
-    {% for certificado in certificados %}
-      {% if certificado.categoria == 'formacao' %}
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 position-relative">
-            <div class="card-body">
-              <div class="position-absolute top-0 end-0 p-2 text-end" style="font-size: 0.9em;">
-                <span class="badge bg-light text-dark">{{ certificado.data_inicio|date:'Y' }} - {{ certificado.data_final|date:'Y' }}</span>
-              </div>
-              <h5 class="card-title">{{ certificado.titulo }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ certificado.instituicao }}</h6>
-              <p class="card-text">{{ certificado.descricao }}</p>
-            </div>
+    <!-- SKILLS -->
+    <div class="col-md-4">
+      <div class="card bg-dark">
+        <h4>Skills</h4>
+      </div>
+      <div class="card" style="padding-left: 25px; padding-bottom: 7px; padding-top: 7px;">
+        {% if skills %}
+          <div class="d-flex flex-row">
+            {% for skill in skills %}
+              <div class="p-2" style="background-color: #800020; color: white;">{{ skill.titulo }}</div>
+            {% endfor %}
           </div>
-        </div>
-      {% endif %}
-    {% empty %}
-      <p>Nenhum certificado encontrado.</p>
-    {% endfor %}
+        {% else %}
+          <p>Nenhum card disponível.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- CERTIFICADOS FORMACAO -->
+    <div class="col-md-4">
+      <div class="card bg-dark">
+        <h4>Formação</h4>
+      </div>
+
+      {% for certificado in certificados|dictsortreversed:'data_final' %}
+        {% if certificado.categoria == 'formacao' %}
+          <div class="card mb-1" style="padding: 3;">
+            <h5 class="card-title mb-1">{{ certificado.titulo }}</h5>
+            <h6 class="card-subtitle mb-1 text-muted">{{ certificado.instituicao }} - <span style="color: #800020;">{{ certificado.descricao }}</span> - {{ certificado.data_final|date:'Y' }}</h6>
+          </div>
+        {% endif %}
+      {% empty %}
+        <p>Nenhum card disponível.</p>
+      {% endfor %}
+    </div>
   </div>
 
-  <div id="certificados-idiomas" class="row">
-    <h3>Idiomas</h3>
-    {% for certificado in certificados %}
-      {% if certificado.categoria == 'Idiomas' %}
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 position-relative">
-            <div class="card-body">
-              <div class="position-absolute top-0 end-0 p-2 text-end" style="font-size: 0.9em;">
-                <span class="badge bg-light text-dark">{{ certificado.data_final|date:'Y' }}</span>
-              </div>
-              <h5 class="card-title">{{ certificado.titulo }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ certificado.instituicao }}</h6>
-              <p class="card-text">{{ certificado.descricao }}</p>
-            </div>
-          </div>
+  <!-- EXPERIENCIAS PROFISSIONAIS -->
+  <div class="row my-4">
+    <div class="col-md-4">
+      <div class="card bg-dark">
+        <h4>Exp. Profissional</h4>
+      </div>
+      {% for experiencia in experiencias|dictsortreversed:'data_final' %}
+        {% if experiencia.categoria == 'profissional' %}
+          <div class="card mb-1" style="padding: 10px;">
+        <h5 class="card-title mb-1">{{ experiencia.cargo }}</h5>
+        <div class="d-flex justify-content-between">
+            <h6 class="card-subtitle mb-1" style="color: #800020;">{{ experiencia.instituicao }}</h6>
+            <div style="width: 10px;"></div> <!-- Add spacing -->
+            <h6 class="card-subtitle mb-1" style="color: #888888ff;">{{ experiencia.data_inicio|date:'m/Y' }} - {{ experiencia.data_final|date:'m/Y' }}</h6>
         </div>
-      {% endif %}
-    {% empty %}
-      <p>Nenhum certificado encontrado.</p>
-    {% endfor %}
+        <h6 class="card-text mb-0" style="text-align: justify;">{{ experiencia.descricao }}</h6>
+          </div>
+        {% endif %}
+      {% empty %}
+        <p>Nenhum card disponível.</p>
+      {% endfor %}
+    </div>
+
+    <!-- EXPERIENCIAS PROJETOS -->
+    <div class="col-md-4">
+      <div class="card bg-dark">
+        <h4>Projetos</h4>
+      </div>
+      {% for card in setor2_cards %}
+        <div class="card mb-3">
+          <div class="card-body">{{ card.content }}</div>
+        </div>
+      {% empty %}
+        <p>Nenhum card disponível.</p>
+      {% endfor %}
+    </div>
+
+    <!-- EXPERIENCIAS IDIOMAS -->
+    <div class="col-md-4">
+      <div class="card bg-dark">
+        <h4>Idiomas</h4>
+      </div>
+      {% for card in setor3_cards %}
+        <div class="card mb-3">
+          <div class="card-body">{{ card.content }}</div>
+        </div>
+      {% empty %}
+        <p>Nenhum card disponível.</p>
+      {% endfor %}
+    </div>
   </div>
-
-
-
-
 {% endblock %}
